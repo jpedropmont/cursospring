@@ -8,27 +8,36 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class CategoriaDomain implements Serializable{
+public class ProdutoDomain implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	private Double preco;
 	
-	@ManyToMany(mappedBy ="categorias")
-	private List<ProdutoDomain> produtos = new ArrayList<ProdutoDomain>();
+	@ManyToMany
+	@JoinTable(
+			name = "PRODUTO_CATEGORIA",
+			joinColumns = @JoinColumn(name = "produto_id"),
+			inverseJoinColumns = @JoinColumn(name = "categoria_id")
+	)
+	private List<CategoriaDomain> categorias = new ArrayList<CategoriaDomain>();
 	
-	public CategoriaDomain () {}
+	public ProdutoDomain() {}
 
-	public CategoriaDomain(Integer id, String nome) {
+	public ProdutoDomain(Integer id, String nome, Double preco) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.preco = preco;
 	}
 
 	public Integer getId() {
@@ -46,13 +55,21 @@ public class CategoriaDomain implements Serializable{
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	public List<ProdutoDomain> getProdutos() {
-		return produtos;
+
+	public Double getPreco() {
+		return preco;
 	}
 
-	public void setProdutos(List<ProdutoDomain> produtos) {
-		this.produtos = produtos;
+	public void setPreco(Double preco) {
+		this.preco = preco;
+	}
+
+	public List<CategoriaDomain> getCategorias() {
+		return categorias;
+	}
+
+	public void setCategorias(List<CategoriaDomain> categorias) {
+		this.categorias = categorias;
 	}
 
 	@Override
@@ -71,7 +88,7 @@ public class CategoriaDomain implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CategoriaDomain other = (CategoriaDomain) obj;
+		ProdutoDomain other = (ProdutoDomain) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -79,5 +96,7 @@ public class CategoriaDomain implements Serializable{
 			return false;
 		return true;
 	}
+	
+	
 	
 }
