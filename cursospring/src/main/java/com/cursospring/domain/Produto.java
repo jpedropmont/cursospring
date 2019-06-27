@@ -15,7 +15,7 @@ import javax.persistence.ManyToMany;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-public class ProdutoDomain implements Serializable{
+public class Produto implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -32,11 +32,11 @@ public class ProdutoDomain implements Serializable{
 			joinColumns = @JoinColumn(name = "produto_id"),
 			inverseJoinColumns = @JoinColumn(name = "categoria_id")
 	)
-	private List<CategoriaDomain> categorias = new ArrayList<CategoriaDomain>();
+	private List<Categoria> categorias = new ArrayList<Categoria>();
 	
-	public ProdutoDomain() {}
+	public Produto() {}
 
-	public ProdutoDomain(Integer id, String nome, Double preco) {
+	public Produto(Integer id, String nome, Double preco) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -67,11 +67,11 @@ public class ProdutoDomain implements Serializable{
 		this.preco = preco;
 	}
 
-	public List<CategoriaDomain> getCategorias() {
+	public List<Categoria> getCategorias() {
 		return categorias;
 	}
 
-	public void setCategorias(List<CategoriaDomain> categorias) {
+	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
 	}
 
@@ -91,7 +91,7 @@ public class ProdutoDomain implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ProdutoDomain other = (ProdutoDomain) obj;
+		Produto other = (Produto) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

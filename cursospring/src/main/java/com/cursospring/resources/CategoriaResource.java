@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cursospring.domain.CategoriaDomain;
+import com.cursospring.domain.Categoria;
 import com.cursospring.services.CategoriaService;
 
 @RestController
@@ -19,7 +19,7 @@ public class CategoriaResource {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> find (@PathVariable Integer id) { //@PathVariable traduz o id da requisição para o parametro da função
-		CategoriaDomain obj = service.buscar(id);
+		Categoria obj = service.buscar(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	

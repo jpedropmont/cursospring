@@ -8,13 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import javax.persistence.OneToMany;
 
 @Entity
-public class CategoriaDomain implements Serializable{
-	
+public class Estado implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -22,13 +20,15 @@ public class CategoriaDomain implements Serializable{
 	private Integer id;
 	private String nome;
 	
-	@JsonManagedReference
-	@ManyToMany(mappedBy ="categorias")
-	private List<ProdutoDomain> produtos = new ArrayList<ProdutoDomain>();
 	
-	public CategoriaDomain () {}
+	@OneToMany(mappedBy = "estado")
+	private List<Cidade> cidades = new ArrayList<Cidade>();
+	
+	public Estado () {
+		
+	}
 
-	public CategoriaDomain(Integer id, String nome) {
+	public Estado(Integer id, String nome) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -49,13 +49,13 @@ public class CategoriaDomain implements Serializable{
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	public List<ProdutoDomain> getProdutos() {
-		return produtos;
+
+	public List<Cidade> getCidades() {
+		return cidades;
 	}
 
-	public void setProdutos(List<ProdutoDomain> produtos) {
-		this.produtos = produtos;
+	public void setCidades(List<Cidade> cidades) {
+		this.cidades = cidades;
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class CategoriaDomain implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CategoriaDomain other = (CategoriaDomain) obj;
+		Estado other = (Estado) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -82,5 +82,7 @@ public class CategoriaDomain implements Serializable{
 			return false;
 		return true;
 	}
+	
+	
 	
 }
