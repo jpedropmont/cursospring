@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.cursospring.domain.Categoria;
 import com.cursospring.domain.Cidade;
+import com.cursospring.domain.Cliente;
+import com.cursospring.domain.Endereco;
 import com.cursospring.domain.Estado;
 import com.cursospring.domain.Produto;
+import com.cursospring.domain.enums.TipoCliente;
 import com.cursospring.repositories.CategoriaRepository;
 import com.cursospring.repositories.CidadeRepository;
+import com.cursospring.repositories.ClienteRepository;
+import com.cursospring.repositories.EnderecoRepository;
 import com.cursospring.repositories.EstadoRepository;
 import com.cursospring.repositories.ProdutoRepository;
 
@@ -30,6 +35,12 @@ public class CursospringApplication implements CommandLineRunner{
 	
 	@Autowired
 	private CidadeRepository cidRepo;
+	
+	@Autowired
+	private EnderecoRepository endRepo;
+	
+	@Autowired
+	private ClienteRepository cliRepo;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursospringApplication.class, args);
@@ -67,6 +78,19 @@ public class CursospringApplication implements CommandLineRunner{
 		
 		estRepo.saveAll(Arrays.asList(est1, est2));
 		cidRepo.saveAll(Arrays.asList(c1, c2, c3));
+		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "0000000001", TipoCliente.PESSOAFISICA);
+		
+		cli1.getTelefones().addAll(Arrays.asList("3279-3030", "9999-8888"));
+		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 203", "Jardim", "60867700", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "60868400", cli1, c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		
+		cliRepo.saveAll(Arrays.asList(cli1));
+		endRepo.saveAll(Arrays.asList(e1, e2));
+		
 		
 	}
 
