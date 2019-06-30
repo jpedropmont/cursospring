@@ -1,5 +1,6 @@
 package com.cursospring;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,35 +13,48 @@ import com.cursospring.domain.Cidade;
 import com.cursospring.domain.Cliente;
 import com.cursospring.domain.Endereco;
 import com.cursospring.domain.Estado;
+import com.cursospring.domain.Pagamento;
+import com.cursospring.domain.PagamentoComBoleto;
+import com.cursospring.domain.PagamentoComCartao;
+import com.cursospring.domain.Pedido;
 import com.cursospring.domain.Produto;
+import com.cursospring.domain.enums.EstadoPagamento;
 import com.cursospring.domain.enums.TipoCliente;
 import com.cursospring.repositories.CategoriaRepository;
 import com.cursospring.repositories.CidadeRepository;
 import com.cursospring.repositories.ClienteRepository;
 import com.cursospring.repositories.EnderecoRepository;
 import com.cursospring.repositories.EstadoRepository;
+import com.cursospring.repositories.PagamentoRepository;
+import com.cursospring.repositories.PedidoRepository;
 import com.cursospring.repositories.ProdutoRepository;
 
 @SpringBootApplication
 public class CursospringApplication implements CommandLineRunner{
 
 	@Autowired
-	private CategoriaRepository catRepo;
+	private CategoriaRepository categoriaRepository;
 	
 	@Autowired
-	private ProdutoRepository prodRepo;
+	private ProdutoRepository produtoRepository;
 	
 	@Autowired
-	private EstadoRepository estRepo;
+	private EstadoRepository estadoRepository;
 	
 	@Autowired
-	private CidadeRepository cidRepo;
+	private CidadeRepository cidadeRepository;
 	
 	@Autowired
-	private EnderecoRepository endRepo;
+	private EnderecoRepository enderecoRepository;
 	
 	@Autowired
-	private ClienteRepository cliRepo;
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursospringApplication.class, args);
@@ -63,8 +77,8 @@ public class CursospringApplication implements CommandLineRunner{
 		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
 		p3.getCategorias().addAll(Arrays.asList(cat1));
 		
-		catRepo.saveAll(Arrays.asList(cat1, cat2));
-		prodRepo.saveAll(Arrays.asList(p1, p2, p3));
+		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
+		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
 		
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulo");
@@ -76,8 +90,8 @@ public class CursospringApplication implements CommandLineRunner{
 		est1.getCidades().addAll(Arrays.asList(c1));
 		est2.getCidades().addAll(Arrays.asList(c2, c3));
 		
-		estRepo.saveAll(Arrays.asList(est1, est2));
-		cidRepo.saveAll(Arrays.asList(c1, c2, c3));
+		estadoRepository.saveAll(Arrays.asList(est1, est2));
+		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
 		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "0000000001", TipoCliente.PESSOAFISICA);
 		
@@ -88,9 +102,24 @@ public class CursospringApplication implements CommandLineRunner{
 		
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
 		
-		cliRepo.saveAll(Arrays.asList(cli1));
-		endRepo.saveAll(Arrays.asList(e1, e2));
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2));
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2019 10:32"), cli1, e1);
+		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2019 15:45"), cli1, e2);
+		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pagto1);
+		
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2019 22:00"), null);
+		ped2.setPagamento(pagto2);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 		
 	}
 
